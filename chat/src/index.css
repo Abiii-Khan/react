@@ -1,0 +1,67 @@
+*
+{
+  padding: 0%;
+  margin: 0%;
+}
+/* body
+{
+  background-color: lightyellow;
+} */
+body
+{
+  background-image: url(https://cdn2.hubspot.net/hubfs/202339/canvas/images/parallax/Website-Design-Background.png);
+  background-size: 100%;
+  background-size: cover;
+}
+.main
+{
+  width: 400px;
+  margin: 40px auto 50px auto;
+}
+.form
+{
+  background-color: rgba(95, 148, 161, 0.5);
+  width: 100%;
+  font-size: 18px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 15px darkcyan;
+  color: #fff;
+}
+h1
+{
+  text-align: center;
+  padding: 5px;
+}
+label
+{
+  font-size: 17px;
+}
+.text
+{
+  margin: 10px;
+  width: 300px;
+  border-radius: 3px;
+  outline: 0;
+  padding: 7px;
+  position: relative;
+}
+.it
+{
+  width: 350px;
+  padding: 3px;
+}
+button 
+{
+  width: 300px;
+  margin: 6%;
+  margin-left: 13%;
+  padding: 7px;
+  font-size: 16px;
+  border-radius: 10px;
+  background-color: orange;
+  color: #fff;
+}
+p
+{
+  padding: 5%;
+}
