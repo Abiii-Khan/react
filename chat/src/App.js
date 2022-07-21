@@ -5,11 +5,13 @@ import Register from "./user-info/Registration";
 const App = () => {
   const [isLogin, setIsLogin] = useState(true);
 
-  function pageHnadler(flag){
+  function pageHandler(flag){
     setIsLogin(flag);
   }
-
-  return <>{isLogin ? <Login  isLogin={pageHnadler}/> : <Register isRegister={pageHnadler}/>}</>;
+  return <>{isLogin ? <Login  isLogin={pageHandler}/> : <Register isRegister={pageHandler}/>}</>;
+  // return (
+    // <Register />
+  // )/
 };
 
 export default App;

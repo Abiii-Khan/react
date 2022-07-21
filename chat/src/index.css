@@ -5,14 +5,16 @@
 }
 /* body
 {
-  background-color: lightyellow;
+  background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);
 } */
 body
 {
-  background-image: url(https://cdn2.hubspot.net/hubfs/202339/canvas/images/parallax/Website-Design-Background.png);
-  background-size: 100%;
-  background-size: cover;
-}
+  background-image: url(https://img.freepik.com/premium-photo/wood-background-texture_124507-6931.jpg?w=2000);
+  width: 100%;
+  height: auto;
+  background-repeat: no-repeat;
+  /* background-size: cover; */
+} 
 .main
 {
   width: 400px;
@@ -48,7 +50,19 @@ label
 .it
 {
   width: 350px;
+  height: 25px;
   padding: 3px;
+}
+.no-arrow {
+  -moz-appearance: textfield;
+}
+.no-arrow::-webkit-inner-spin-button {
+  display: none;
+}
+.no-arrow::-webkit-outer-spin-button,
+.no-arrow::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 button 
 {
@@ -61,7 +75,12 @@ button
   background-color: orange;
   color: #fff;
 }
-p
+#account
 {
   padding: 5%;
+}
+.err
+{
+  color: red;
+  font-size: 14px;
 }
