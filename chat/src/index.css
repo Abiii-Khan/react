@@ -3,18 +3,19 @@
   padding: 0%;
   margin: 0%;
 }
-/* body
-{
-  background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);
-} */
 body
 {
-  background-image: url(https://img.freepik.com/premium-photo/wood-background-texture_124507-6931.jpg?w=2000);
+  background-color: rgb(171, 77, 54);
+}
+/* body
+{
+  background-image: url(https://cdn.pixabay.com/photo/2016/02/23/07/37/wall-1217083__340.jpg);
   width: 100%;
-  height: auto;
+  height: 700px;
   background-repeat: no-repeat;
-  /* background-size: cover; */
-} 
+  background-size: 100% 100%;
+  /* background-size: cover;
+}  */
 .main
 {
   width: 400px;
