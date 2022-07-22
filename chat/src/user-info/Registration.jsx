@@ -11,14 +11,26 @@ const Register = ({isRegister}) => {
     setFormValues({...formValues , [name] : value});
    }
 
-   const handleSubmit = (e) => {
+   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormErrors(validate(formValues));
     setIsSubmit(true);
+
+    let result = await fetch("https://testapi.io/api/abdullahkhan/register", {
+      method:"POST",
+      body:JSON.stringify(formValues),
+      headers : {
+        "content-type":"application/json",
+        "accept": "application/json"
+      }
+
+    })
+    result = await result.json();
+    console.log(result);
   };
 
   useEffect(() => {
-    console.log(formErrors);
+    // console.log(formErrors);
     if (Object.keys(formErrors).length === 0 && isSubmit) {
     }
   }, [formErrors]);
