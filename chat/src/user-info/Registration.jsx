@@ -16,7 +16,7 @@ const Register = ({isRegister}) => {
     setFormErrors(validate(formValues));
     setIsSubmit(true);
 
-    let result = await fetch("https://testapi.io/api/abdullahkhan/register", {
+    let result = await fetch("https://test-chat-274e3-default-rtdb.firebaseio.com/chatform.json", {
       method:"POST",
       body:JSON.stringify(formValues),
       headers : {
