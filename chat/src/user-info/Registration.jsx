@@ -15,70 +15,76 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormErrors(validate(formValues));
     setIsSubmit(true);
-
 
     const auth = getAuth();
     createUserWithEmailAndPassword(auth,formValues.email,formValues.password)
       .then((userCredential) => {
-        alert("user created with email ",userCredential.user.email)
+        setFormErrors({registered:"Account created successfully!"})
         console.log(userCredential)
       })
       .catch((error) => {
-        alert(error)
-      // console.log(error)
+        if (error.code === "auth/internal-error") {
+          alert("Please fill all the fields")
+        } else if (error.code === "auth/email-already-in-use") {
+          setFormErrors({email:"email already in use, use a different email."})
+        } else if (error.code === "auth/invalid-email") {
+          setFormErrors({email:"invalid email!"}) 
+        } else if (error.code === "auth/network-request-failed") {
+          alert("network error! please make sure that you have a working network access");
+        } else if (error.code === "auth/invalid-password") {
+          setFormErrors({password:"invalid password!"})
+        } else if (error.code === "auth/weak-password") {
+          setFormErrors({password:"weak password! Password should be at least 6 characters"})
+        }
       });
   };
 
   useEffect(() => {
-    // console.log(formErrors);
     if (Object.keys(formErrors).length === 0 && isSubmit) {
+      // errors
     }
-  }, [formErrors]);
-
-  const validate = (values) => {
-    const errors = {};
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    if (!values.username) {
-      errors.username = "Username is required!";
-    }
-    if (!values.email) {
-      errors.email = "Email is required!";
-    } else if (!regex.test(values.email)) {
-      errors.email = "This is not a valid email format!";
-    }
-    if (!values.password) {
-      errors.password = "Password is required";
-    } else if (values.password.length < 4) {
-      errors.password = "Password must be more than 4 characters";
-    } else if (values.password.length > 10) {
-      errors.password = "Password cannot exceed more than 10 characters";
-    }
-    return errors;
-  };
+  });
+  // const validate = (values) => {
+  //   const errors = {};
+  //   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+  //   if (!values.password) {
+  //     errors.password = "Password is required";
+  //   } else if (values.password.length < 6) {
+  //     errors.password = "Password must be more than 6 characters";
+  //   } else if (values.password.length > 10) {
+  //     errors.password = "Password cannot exceed more than 10 characters";
+  //   }
+  //   return errors;
+  // };
 
   return (
     <div className="main">
       <div className="form">
         <h1>Sign up</h1>
+        {
+          
+        }
         <form className="text" onSubmit={handleSubmit}>
           <label htmlFor="username">User Name : </label><br/>
-          <input type="text" className="it" value={formValues.username} onChange={handleChange}  name="username" autoComplete="none" placeholder="username"/><br/>
+          <input type="text" className="it" value={formValues.username} onChange={handleChange}  name="username" autoComplete="none" placeholder="username" required/><br/>
           <p className="err">{formErrors.username}</p><br/>
 
           <label htmlFor="email">Email :</label><br/>
-          <input type="email" className="it" value={formValues.email} onChange={handleChange} name="email" placeholder="example@gmail.com" /><br/>
+          <input type="email" className="it" value={formValues.email} onChange={handleChange} name="email" placeholder="example@gmail.com" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/><br/>
           <p className="err">{formErrors.email}</p><br/>
 
-          <label htmlFor="mobile">Mobile no. :</label><br/>
-          <input type="number" className="it no-arrow" name="mobile" pattern="[0-9]{4}-[0-9]{7}" placeholder="01234567891"/><br/><br/>
+          {/* <label htmlFor="mobile">Mobile no. :</label><br/>
+          <input type="number" className="it no-arrow" name="mobile" value={formValues.mobile} onChange={handleChange} pattern="[0-9]{4}-[0-9]{7}" placeholder="01234567891" required/><br/>
+          <p className="err">{formErrors.mobile}</p><br/> */}
 
           <label htmlFor="pass">Password :</label><br/>
-          <input type="password" className="it" name="password" value={formValues.password} onChange={handleChange} placeholder="password" /><br/>
+          <input type="password" className="it" name="password" value={formValues.password} onChange={handleChange} placeholder="password" required/><br/>
           <p className="err">{formErrors.password}</p><br/>
 
           <button type="submit" id="button">Register</button><br/>
+          <p className="err create">{formErrors.registered}</p><br/>
+
         </form>
         <p id="account"> Already have an account? <Link to="/Login">Login</Link></p>
       </div>

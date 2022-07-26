@@ -67,12 +67,21 @@ button
   background-color: rgb(0, 157, 255);
   color: #fff;
 }
+button:hover
+{
+  cursor: pointer;
+}
 #account
 {
   padding: 5%;
 }
 .err
 {
-  color: red;
+  color: rgb(188, 38, 38);
   font-size: 14px;
+}
+.create
+{
+  font-size: 20px;
+  color: antiquewhite;
 }
