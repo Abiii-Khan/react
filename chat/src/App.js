@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./user-info/Login.jsx";
 import Register from "./user-info/Registration.jsx";
 // eslint-disable-next-line no-unused-vars
-import app from "./firebase";
+// import app from "./firebase";
 import Profile from "./user-info/Profile.jsx";
  
 const App = () => {
