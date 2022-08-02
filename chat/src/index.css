@@ -1,9 +1,9 @@
-*
+/* *
 {
   padding: 0%;
   margin: 0%;
 }
-body
+body.login
 {
   background-color: rgb(54, 130, 171);
 }
@@ -14,11 +14,11 @@ body
 }
 .form
 {
-  background-color: rgba(95, 148, 161, 0.5);
+  background-color: rgba(95, 148, 161, 0.477);
   width: 100%;
   font-size: 18px;
   border-radius: 10px;
-  box-shadow: 2px 2px 15px rgb(128, 235, 235);
+  box-shadow: 2px 2px 15px rgb(60, 63, 63);
   color: #fff;
 }
 h1
@@ -56,7 +56,7 @@ label
   -webkit-appearance: none;
   margin: 0;
 }
-button 
+/* button 
 {
   width: 100%;
   margin: 6%;
@@ -70,7 +70,7 @@ button
 button:hover
 {
   cursor: pointer;
-}
+} 
 #account
 {
   padding: 5%;
@@ -83,5 +83,5 @@ button:hover
 .create
 {
   font-size: 20px;
-  color: antiquewhite;
-}
+  color: green;
+} */

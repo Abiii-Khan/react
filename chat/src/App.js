@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./user-info/Login.jsx";
 import Register from "./user-info/Registration.jsx";
-// eslint-disable-next-line no-unused-vars
 import app from "./firebase";
 import Profile from "./user-info/Profile.jsx";
+import Messages from "./user-info/Messages.jsx";
  
 const App = () => {
   return (
@@ -15,11 +16,12 @@ const App = () => {
           <Route path="Login" element={<Login />} />
           <Route path="Register" element={<Register />} />
           <Route path="Profile" element={<Profile />} />
+          <Route path="Messages" element={<Messages />} />
           <Route
             path="*"
             element={
               <main style={{ padding: "1rem" }}>
-                <p>There is nothing here!</p>
+                <h1><strong style={{color:"red"}}>404 </strong>page not found!</h1>
               </main>
             }
           />

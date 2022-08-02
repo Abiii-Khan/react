@@ -1,50 +1,78 @@
-import { Outlet, Link } from "react-router-dom";
+/* eslint-disable no-unused-vars */
+// eslint-disable-next-line no-unused-vars
+import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { Button, Form, Card } from "react-bootstrap";
 
 const Register = () => {
-  const initialValues = {username: "", email: "",password: ""};
+  const initialValues = { username: "", email: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
-     
-  const handleChange=(e)=>{
-    const {name , value} = e.target;
-    setFormValues({...formValues , [name] : value});
-  }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+
+  const postUserData = async (user) => {
+    await fetch(
+      "https://test-chat-274e3-default-rtdb.firebaseio.com/users.json",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...formValues, userId: user.uid }),
+      }
+    );
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmit(true);
 
+    // eslint-disable-next-line no-unused-vars
+
     const auth = getAuth();
-    createUserWithEmailAndPassword(auth,formValues.email,formValues.password)
+    createUserWithEmailAndPassword(auth, formValues.email, formValues.password)
       .then((userCredential) => {
-        setFormErrors({registered:"Account created successfully!"})
-        console.log(userCredential)
+        setFormErrors({ registered: "Account created successfully!" });
+        if (userCredential?.user?.uid) {
+          postUserData(userCredential.user);
+        }
+        console.log(userCredential);
       })
       .catch((error) => {
         if (error.code === "auth/internal-error") {
-          alert("Please fill all the fields")
+          alert("Please fill all the fields");
         } else if (error.code === "auth/email-already-in-use") {
-          setFormErrors({email:"email already in use, use a different email."})
+          setFormErrors({
+            email: "email already in use, use a different email.",
+          });
         } else if (error.code === "auth/invalid-email") {
-          setFormErrors({email:"invalid email!"}) 
+          setFormErrors({ email: "invalid email!" });
         } else if (error.code === "auth/network-request-failed") {
-          alert("network error! please make sure that you have a working network access");
+          alert(
+            "network error! please make sure that you have a working network access"
+          );
         } else if (error.code === "auth/invalid-password") {
-          setFormErrors({password:"invalid password!"})
+          setFormErrors({ password: "invalid password!" });
         } else if (error.code === "auth/weak-password") {
-          setFormErrors({password:"weak password! Password should be at least 6 characters"})
+          setFormErrors({
+            password: "weak password! Password should be at least 6 characters",
+          });
         }
       });
   };
 
   useEffect(() => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
-      // errors
+      //
     }
   });
+
   // const validate = (values) => {
   //   const errors = {};
   //   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
@@ -59,38 +87,32 @@ const Register = () => {
   // };
 
   return (
-    <div className="main">
-      <div className="form">
-        <h1>Sign up</h1>
-        {
-          
-        }
-        <form className="text" onSubmit={handleSubmit}>
-          <label htmlFor="username">User Name : </label><br/>
-          <input type="text" className="it" value={formValues.username} onChange={handleChange}  name="username" autoComplete="none" placeholder="username" required/><br/>
-          <p className="err">{formErrors.username}</p><br/>
-
-          <label htmlFor="email">Email :</label><br/>
-          <input type="email" className="it" value={formValues.email} onChange={handleChange} name="email" placeholder="example@gmail.com" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/><br/>
-          <p className="err">{formErrors.email}</p><br/>
-
-          {/* <label htmlFor="mobile">Mobile no. :</label><br/>
-          <input type="number" className="it no-arrow" name="mobile" value={formValues.mobile} onChange={handleChange} pattern="[0-9]{4}-[0-9]{7}" placeholder="01234567891" required/><br/>
-          <p className="err">{formErrors.mobile}</p><br/> */}
-
-          <label htmlFor="pass">Password :</label><br/>
-          <input type="password" className="it" name="password" value={formValues.password} onChange={handleChange} placeholder="password" required/><br/>
-          <p className="err">{formErrors.password}</p><br/>
-
-          <button type="submit" id="button">Register</button><br/>
-          <p className="err create">{formErrors.registered}</p><br/>
-
-        </form>
-        <p id="account"> Already have an account? <Link to="/Login">Login</Link></p>
+    <>
+      <div style={{width:"25rem", margin:"auto", marginTop:"100px", fontFamily:"sans"}}>
+        <Card className="container " style={{positon:"center", boxShadow:"2px 2px 15px"}}>
+          <Card.Body>
+            <Card.Title className="text-center pb-3">Sign Up</Card.Title>
+            <Form className="container" onSubmit={handleSubmit}>
+              <Form.Group className="m-1 p-1">
+                <Form.Label>username :</Form.Label>
+                <Form.Control type="username" name="username" value={formValues.username} onChange={handleChange} placeholder="username" required></Form.Control>
+                <Form.Text style={{color: "red"}} >{formErrors.username}</Form.Text><br/>
+                <Form.Label>Email :</Form.Label>
+                <Form.Control type="email" name="email" value={formValues.email} onChange={handleChange} placeholder="example@email.com" required></Form.Control>
+                <Form.Text style={{color: "red"}} >{formErrors.email}</Form.Text><br/>
+                <Form.Label>Password :</Form.Label>
+                <Form.Control type="password" name="password" value={formValues.password} onChange={handleChange} placeholder="******" required></Form.Control>
+                <Form.Text style={{color: "red"}} >{formErrors.password}</Form.Text><br/>
+                <Button type="submit" variant="primary">Register</Button><br/>
+                <Form.Text style={{color: "green"}} >{formErrors.registered}</Form.Text><br/>
+              </Form.Group>
+              <Form.Text >Already have an account? <Link to="/Login">Login</Link></Form.Text>
+            </Form>
+          </Card.Body>
+        </Card>
       </div>
-      <Outlet />
-    </div>
-  )
-}
+    </>
+  );
+};
 
 export default Register;
