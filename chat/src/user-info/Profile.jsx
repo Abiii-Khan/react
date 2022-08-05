@@ -1,24 +1,25 @@
 /* eslint-disable no-unused-vars */
+import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import {Button, Form, Row, Col} from "react-bootstrap";
-import { PersonCircle, PersonSquare } from "react-bootstrap-icons";
+import {Form} from "react-bootstrap";
+import { PersonCircle } from "react-bootstrap-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {db} from "../firebase.js"
-import { ref, onValue, push, update, remove } from "firebase/database";
+import { ref, onValue} from "firebase/database";
+import "../index.css";
 
 const Profile = () => {
-  const userDetails = { username: "", email: "", password: "" };
-  const [values, setValues] = useState(userDetails);
-  const [username, setUserName] = useState("");
+  const [user, setUser] = useState("");
   const [all, setAll] = useState([]);
-  const [na, setNa] = useState("");
   const [foundUsers, setFoundUsers] = useState(all);
+  const [noRecordFound, setNoRecordFound] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const value = localStorage.getItem("Name")
     const items = JSON.parse(value);
     if (items) {
-      setUserName(items)
+      setUser(items)
       Data()
     }
   }, []);
@@ -29,27 +30,42 @@ const Profile = () => {
       querySnapShot.forEach((snap)=>{
         item.push(snap.val())
       })
-      setAll(item)
+      setAll(item);
+      setLoading(false);
     });
   }
   
   const filter = (e) => {
+
     e.preventDefault();
     const keyword = e.target.value;
+    
     if (keyword !== "") {
       const results = all.filter((user) => {
         return user.username.toLowerCase().startsWith(keyword.toLowerCase());
       });
+      if(results.length === 0) {
+        setNoRecordFound(true);
+      } else {
+        setNoRecordFound(false);
+      }
       setFoundUsers(results);
     } else {
-      setFoundUsers(keyword)
+      setFoundUsers([]);
+      setNoRecordFound(false);
     }
   };
-  console.log(all);
+
   return (
     <>
-      <Form.Group className="container-fluid bg-secondary ">
-        <h3 style={{ textAlign: "left", fontFamily:"fantasy", padding:"2%", color:"white"}}>{username}</h3>
+      <Form.Group className="container-fluid overflow-hidden fixed-sticky bg-secondary">
+        <div style={{margin:"auto", textAlign:"end"}}>
+          <h3 style={{ textAlign: "left", fontFamily:"fantasy", padding:"2%", color:"white"}}>{user.username}
+            <span >
+            </span>
+          </h3>
+          <Link to="/Login" className="logout">Logout</Link>
+        </div>
       </Form.Group>
       <Form.Group className="container-fluid bg-secondary p-2">
         <Form.Control className="container" type="search" placeholder="Search..." onChange={filter} ></Form.Control>
@@ -57,9 +73,9 @@ const Profile = () => {
           {foundUsers && foundUsers !== "" ? (
             foundUsers.map((user) => (
               <Form.Group className="container mt-5px list-group" key={user.email}>
-                <a className="nav-link list-group-item list-group-item-action list-group-item-light " href="#user">
+                {/* <a className="nav-link list-group-item list-group-item-action list-group-item-light " href="#user">
                   {user.username}
-                </a>
+                </a> */}
               </Form.Group>
             ))
           ) : (
@@ -68,21 +84,23 @@ const Profile = () => {
         </div>  
       </Form.Group><br/>
       <Form.Group className="container-fluid mt-10% list-group">
-        {/* {foundUsers && foundUsers === ""  ? (
+        {foundUsers && foundUsers.length > 0  ? (
           foundUsers.map((user) => (
             <a className="list-group-item list-group-item-action list-group-item-light m-1" href="http://localhost:3000/Messages" key={user.username}>
               <PersonCircle className="m-2" color="grey" size={40} />{user.username}
             </a> 
           ))
-        ) : (
-          <></>
-        )} */}
+        ) : noRecordFound ?  (
+          <div className="text-center">No record found!</div>
+        ) : (<></>)}
 
-        {all && all.length > 0 ? (
+        {loading ? ( 
+          <div className="spinner-border m-5 text-center" />
+        ) : foundUsers && foundUsers.length === 0 && all && all.length > 0 && !noRecordFound ? (
           all.map((user) => (
-            <a className="list-group-item list-group-item-action list-group-item-light m-1" id="user" href="http://localhost:3000/Messages" key={user.username}>
+            <Link to={"/messages/" + user.username+ user.userId} key={user.username} className="list-group-item list-group-item-action list-group-item-light m-1" id="user" href="http://localhost:3000/Messages">
               <PersonCircle className="m-2" color="grey" size={40} />{user.username}
-            </a> 
+            </Link>
           ))
         ) : (
           <></>

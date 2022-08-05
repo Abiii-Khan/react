@@ -1,87 +1,30 @@
-/* *
-{
-  padding: 0%;
-  margin: 0%;
-}
-body.login
-{
-  background-color: rgb(54, 130, 171);
-}
-.main
-{
-  width: 400px;
-  margin: 50px auto 50px auto;
-}
-.form
-{
-  background-color: rgba(95, 148, 161, 0.477);
-  width: 100%;
-  font-size: 18px;
-  border-radius: 10px;
-  box-shadow: 2px 2px 15px rgb(60, 63, 63);
-  color: #fff;
-}
-h1
-{
-  text-align: center;
-  padding: 5px;
-}
-label
-{
-  font-size: 17px;
-}
-.text
-{
-  margin: 10px;
-  width: 300px;
-  border-radius: 3px;
-  outline: 0;
-  padding: 7px;
-  position: relative;
-}
-.it
-{
-  width: 350px;
-  height: 25px;
-  padding: 3px;
-}
-.no-arrow {
-  -moz-appearance: textfield;
-}
-.no-arrow::-webkit-inner-spin-button {
+body::-webkit-scrollbar {
   display: none;
 }
-.no-arrow::-webkit-outer-spin-button,
-.no-arrow::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.logout
+{
+  font-family: serif;
+  font-size: smaller;
+  color: darkgrey;
+  text-decoration: none;
 }
-/* button 
+#msg-form
 {
-  width: 100%;
-  margin: 6%;
-  margin-left: 13%;
-  padding: 7px;
-  font-size: 16px;
-  border-radius: 10px;
-  background-color: rgb(0, 157, 255);
-  color: #fff;
+  display: flex;
+  bottom: 20px;
+  width: -webkit-fill-available;
+  position: fixed;
 }
-button:hover
+#msg-head
 {
-  cursor: pointer;
-} 
-#account
-{
-  padding: 5%;
+  background-color: lightcyan;
+  height: 50px;
 }
-.err
+#msg-h2
 {
-  color: rgb(188, 38, 38);
-  font-size: 14px;
+  font-family: cursive;
+    margin-top: 3px;
+    text-align: center;
+    position: inherit;
+    font-size: -webkit-xxx-large;
 }
-.create
-{
-  font-size: 20px;
-  color: green;
-} */

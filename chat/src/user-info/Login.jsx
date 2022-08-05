@@ -33,7 +33,7 @@ const Login = (props) => {
         onValue(ref(db, "/users"), querySnapShot => {
           querySnapShot.forEach((snap)=>{
             if(snap.val().email===user.email){
-              localStorage.setItem("Name",JSON.stringify(snap.val().username));
+              localStorage.setItem("Name",JSON.stringify(snap.val()));
               window.location.href = "/profile"
             }
           })
@@ -57,26 +57,27 @@ const Login = (props) => {
 
   return (
     <>
-      {/* <div style={{width:"25rem", margin:"auto", marginTop:"100px", fontFamily:"serif", fontSize:"20px"}}> */}
-      <Card className="container col-5" style={{margin:"auto", boxShadow:"2px 2px 15px", marginTop:"100px", fontFamily:"serif", fontSize:"20px"}}>
-        <Card.Body>
-          <Card.Title className="text-center pb-3">Login</Card.Title>
-          <Form className="container" onSubmit={handleSubmit}>
-            <Form.Group className="m-1 p-1">
-              <Form.Label>Email :</Form.Label>
-              <Form.Control type="email" name="email" value={formValues.email} onChange={handleChange} placeholder="example@email.com" required></Form.Control>
-              <Form.Text style={{color: "red"}} >{formErrors.email}</Form.Text><br/>
-              <Form.Label>Password :</Form.Label>
-              <Form.Control type="password" name="password" value={formValues.password} onChange={handleChange} placeholder="******" required></Form.Control>
-              <Form.Text style={{color: "red"}} >{formErrors.password}</Form.Text><br/>
-              <Button type="submit" variant="primary">Start Chat</Button><br/>
-              <Form.Text style={{color: "green"}} >{formErrors.registered}</Form.Text><br/>
-            </Form.Group>
-            <Form.Text >Don&apos;t have an account? <Link to="/Register">Register</Link></Form.Text>
-          </Form>
-        </Card.Body>
-      </Card>
-      {/* </div>   */}
+      <div style={{ margin:"auto", marginTop:"100px", fontFamily:"serif", fontSize:"20px", width:"fit-content"}}>
+        <Card className="container " style={{positon:"center", boxShadow:"2px 2px 15px"}}>
+          {/* <Card className="container" style={{margin:"auto", boxShadow:"2px 2px 15px", marginTop:"100px", fontFamily:"serif", fontSize:"20px"}}> */}
+          <Card.Body>
+            <Card.Title className="text-center pb-3">Login</Card.Title>
+            <Form className="container" onSubmit={handleSubmit}>
+              <Form.Group className="m-1 p-1">
+                <Form.Label>Email :</Form.Label>
+                <Form.Control type="email" name="email" value={formValues.email} onChange={handleChange} placeholder="example@email.com" required></Form.Control>
+                <Form.Text style={{color: "red"}} >{formErrors.email}</Form.Text><br/>
+                <Form.Label>Password :</Form.Label>
+                <Form.Control type="password" name="password" value={formValues.password} onChange={handleChange} placeholder="******" required></Form.Control>
+                <Form.Text style={{color: "red"}} >{formErrors.password}</Form.Text><br/>
+                <Button type="submit" variant="primary">Start Chat</Button><br/>
+                <Form.Text style={{color: "green"}} >{formErrors.registered}</Form.Text><br/>
+              </Form.Group>
+              <Form.Text >Don&apos;t have an account? <Link to="/Register">Register</Link></Form.Text>
+            </Form>
+          </Card.Body>
+        </Card>
+      </div>  
     </>
   );
 };

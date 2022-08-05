@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { Button, Form, Card } from "react-bootstrap";
-
+import {db} from "../firebase.js"
+import { ref, onValue} from "firebase/database";
 const Register = () => {
   const initialValues = { username: "", email: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
@@ -24,7 +25,7 @@ const Register = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...formValues, userId: user.uid }),
+        body: JSON.stringify({ ...formValues, userId: user }),
       }
     );
   };
@@ -40,9 +41,8 @@ const Register = () => {
       .then((userCredential) => {
         setFormErrors({ registered: "Account created successfully!" });
         if (userCredential?.user?.uid) {
-          postUserData(userCredential.user);
+          postUserData(userCredential.user.uid);
         }
-        console.log(userCredential);
       })
       .catch((error) => {
         if (error.code === "auth/internal-error") {
@@ -73,22 +73,9 @@ const Register = () => {
     }
   });
 
-  // const validate = (values) => {
-  //   const errors = {};
-  //   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-  //   if (!values.password) {
-  //     errors.password = "Password is required";
-  //   } else if (values.password.length < 6) {
-  //     errors.password = "Password must be more than 6 characters";
-  //   } else if (values.password.length > 10) {
-  //     errors.password = "Password cannot exceed more than 10 characters";
-  //   }
-  //   return errors;
-  // };
-
   return (
     <>
-      <div style={{width:"25rem", margin:"auto", marginTop:"100px", fontFamily:"sans"}}>
+      <div style={{width:"fit-content", margin:"auto", marginTop:"100px", fontFamily:"sans", fontSize:"20px"}}>
         <Card className="container " style={{positon:"center", boxShadow:"2px 2px 15px"}}>
           <Card.Body>
             <Card.Title className="text-center pb-3">Sign Up</Card.Title>
