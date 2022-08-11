@@ -13,6 +13,7 @@ const Login = (props) => {
   const [formErrors, setFormErrors] = useState({});
   const [user, setUser] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,14 +27,14 @@ const Login = (props) => {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, formValues.email, formValues.password, formValues.username)
       .then((userCredential) => {
-        const user = userCredential.user;
-        setUser(user);
-        console.log(user.email)
+        const user = userCredential.user.email;
+        // setUser(user);
+        setLoading(true);
         setFormErrors({registered:"Login successful!"})
-        onValue(ref(db, "/users"), querySnapShot => {
+        onValue(ref(db, "/Users"), querySnapShot => {
           querySnapShot.forEach((snap)=>{
-            if(snap.val().email===user.email){
-              localStorage.setItem("Name",JSON.stringify(snap.val()));
+            if(snap.val().Signup.email===user){
+              localStorage.setItem("Name",JSON.stringify(snap.val().Signup));
               window.location.href = "/profile"
             }
           })
@@ -57,9 +58,8 @@ const Login = (props) => {
 
   return (
     <>
-      <div style={{ margin:"auto", marginTop:"100px", fontFamily:"serif", fontSize:"20px", width:"fit-content"}}>
+      <div className="main-div">
         <Card className="container " style={{positon:"center", boxShadow:"2px 2px 15px"}}>
-          {/* <Card className="container" style={{margin:"auto", boxShadow:"2px 2px 15px", marginTop:"100px", fontFamily:"serif", fontSize:"20px"}}> */}
           <Card.Body>
             <Card.Title className="text-center pb-3">Login</Card.Title>
             <Form className="container" onSubmit={handleSubmit}>
@@ -71,7 +71,9 @@ const Login = (props) => {
                 <Form.Control type="password" name="password" value={formValues.password} onChange={handleChange} placeholder="******" required></Form.Control>
                 <Form.Text style={{color: "red"}} >{formErrors.password}</Form.Text><br/>
                 <Button type="submit" variant="primary">Start Chat</Button><br/>
-                <Form.Text style={{color: "green"}} >{formErrors.registered}</Form.Text><br/>
+                {loading ? (
+                  <div className="spinner-border m-2 text-info" />
+                ) : (<></>) }
               </Form.Group>
               <Form.Text >Don&apos;t have an account? <Link to="/Register">Register</Link></Form.Text>
             </Form>

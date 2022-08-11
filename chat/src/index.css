@@ -1,6 +1,14 @@
 body::-webkit-scrollbar {
   display: none;
 }
+.main-div
+{
+  margin: auto;
+  margin-top: 150px;
+  font-family: serif;
+  font-size: 20px;
+  width: fit-content;
+}
 .logout
 {
   font-family: serif;
@@ -17,8 +25,9 @@ body::-webkit-scrollbar {
 }
 #msg-head
 {
-  background-color: lightcyan;
+  background-color: rgb(120, 125, 125);
   height: 50px;
+  color: white;
 }
 #msg-h2
 {
