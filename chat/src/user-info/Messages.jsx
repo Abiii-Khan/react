@@ -21,22 +21,6 @@ const Messages = (props) => {
     setContent(e.target.value);
   };
 
-  // useEffect(() => {
-  //   let index = location.pathname.lastIndexOf("/");
-  //   let userId = location.pathname.substring(index + 1,location.pathname.length);
-  //   getUserData(userId);
-  // }, []);
-  // const getUserData = (userId) => {
-  //   const db = getDatabase();
-  //   const starCountRef = ref(db, "Users/" + userId);
-  //   onValue(starCountRef, (snapshot) => {
-  //     const data = snapshot.val();
-  //     const { Signup: userDetails } = data;
-  //     setUserDetails(userDetails);
-  //     setLoading(false);
-  //   });
-  // };
-
   useEffect(() => {
     const value = localStorage.getItem("Name")
     const items = JSON.parse(value);
