@@ -1,6 +1,12 @@
 body::-webkit-scrollbar {
   display: none;
 }
+.nav-text
+{
+  position: fixed;
+  right: 0;
+  margin: 20px;
+}
 .main-div
 {
   margin: auto;
@@ -16,6 +22,31 @@ body::-webkit-scrollbar {
   color: darkgrey;
   text-decoration: none;
 }
+#profile-header
+{
+  position: sticky;
+  top: 0;
+}
+#profile-head
+{
+  margin: "auto";
+  position:"sticky"; 
+  top: 0;
+  text-align: end;
+}
+#profile-name
+{
+  text-align: left;
+  font-family: fantasy;
+  padding: 2%;
+  color: white;
+  text-transform: capitalize;
+}
+/* #profile-users
+{
+  overflow: scroll;
+  background-color: red;
+} */
 #msg-form
 {
   display: flex;
@@ -28,6 +59,8 @@ body::-webkit-scrollbar {
   background-color: rgb(120, 125, 125);
   height: 50px;
   color: white;
+  position: sticky;
+  top: 0;
 }
 #msg-h2
 {

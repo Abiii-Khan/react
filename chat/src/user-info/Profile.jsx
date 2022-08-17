@@ -5,6 +5,7 @@ import { Form, Button, Modal } from "react-bootstrap";
 import { PersonCircle } from "react-bootstrap-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { db } from "../firebase.js";
+import { getAuth, signOut } from "firebase/auth";
 import { ref, onValue } from "firebase/database";
 import "../index.css";
 import { useLocation, useHref } from "react-router-dom";
@@ -16,6 +17,7 @@ const Profile = () => {
   const [noRecordFound, setNoRecordFound] = useState(false);
   const [loading, setLoading] = useState(true);
   let location = useLocation();
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     const value = localStorage.getItem("Name");
@@ -56,94 +58,112 @@ const Profile = () => {
       setNoRecordFound(false);
     }
   };
-  const logout = () => {
-    alert("You are logged out successfully!");
-  };
+
+  const handleSubmit = () => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        window.location.href = "/login"
+      }).catch((error) => {
+        //
+      });
+  }
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <>
-      <Form.Group className="container-fluid overflow-hidden fixed-sticky bg-secondary">
-        <div style={{ margin: "auto", textAlign: "end", position:"0px 0px 0px 0px" }}>
-          <h3
-            style={{
-              textAlign: "left",
-              fontFamily: "fantasy",
-              padding: "2%",
-              color: "white",
-              textTransform: "capitalize"
-            }}
-          >
-            {console.log(user)}
-            {user.username}
-          </h3>
-          <Link to="/Login" className="logout" onClick={logout}>
-            Logout
-          </Link>
-        </div>
-      </Form.Group>
-      <Form.Group className="container-fluid bg-secondary p-2">
-        <Form.Control
-          className="container"
-          type="search"
-          placeholder="Search..."
-          onChange={filter}
-        ></Form.Control>
-        <div className="user-list">
-          {foundUsers && foundUsers !== "" ? (
-            foundUsers.map((user) => (
-              <Form.Group
-                className="container mt-5px list-group"
-                key={user.email}
-              ></Form.Group>
-            ))
-          ) : (
-            <></>
-          )}
-        </div>
-      </Form.Group>
-      <br />
-      <Form.Group className="container-fluid mt-10% list-group">
-        {foundUsers && foundUsers.length > 0 ? (
-          foundUsers.map((user) => (
-            <a
-              className="list-group-item list-group-item-action list-group-item-light m-1"
-              href="http://localhost:3000/messages"
-              key={JSON.stringify(user)}
-              state={JSON.stringify(user)}
-            >
-              <PersonCircle className="m-2" color="grey" size={40} />
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Body>
+          Are you sure you want to logout?
+        </Modal.Body>
+        <Modal.Footer className="border-0">
+          <Button variant="secondary" onClick={handleClose}>
+            cancel
+          </Button>
+          <Button variant="primary" onClick={handleSubmit}>
+            logout
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <div id="profile-header">
+        <Form.Group className="container-fluid overflow-hidden bg-secondary">
+          <div id="profile-head">
+            <h3 id="profile-name">
               {user.username}
-            </a>
-          ))
-        ) : noRecordFound ? (
-          <div className="text-center">No record found!</div>
-        ) : (
-          <></>
-        )}
-
-        {loading ? (
-          <div className="spinner-border m-5 text-center" />
-        ) : foundUsers &&
-          foundUsers.length === 0 &&
-          all &&
-          all.length > 0 &&
-          !noRecordFound ? (
-            all.map((user) => (
+            </h3>
+            <Form.Text type="submit" onClick={handleShow} className="logout">
+            Logout
+            </Form.Text>
+          </div>
+        </Form.Group>
+        <Form.Group className="container-fluid bg-secondary p-2">
+          <Form.Control id="profile-search"
+            className="container"
+            type="search"
+            placeholder="Search..."
+            onChange={filter}
+          ></Form.Control>
+          <div className="user-list">
+            {foundUsers && foundUsers !== "" ? (
+              foundUsers.map((user) => (
+                <Form.Group
+                  className="container mt-5px list-group"
+                  key={user.email}
+                ></Form.Group>
+              ))
+            ) : (
+              <></>
+            )}
+          </div>
+        </Form.Group>
+        <br />
+      </div>
+      <div id="profile-users">
+        <Form.Group className="container-fluid mt-10% list-group">
+          {foundUsers && foundUsers.length > 0 ? (
+            foundUsers.map((user) => (
               <Link
+                className="list-group-item list-group-item-action list-group-item-light m-1"
                 to={"/messages/" + user.uid}
                 key={user.username}
-                className="list-group-item list-group-item-action list-group-item-light m-1"
-                id="user"
-                href="http://localhost:3000/messages"
+                state={user}
               >
                 <PersonCircle className="m-2" color="grey" size={40} />
                 {user.username}
               </Link>
             ))
+          ) : noRecordFound ? (
+            <div className="text-center">No record found!</div>
           ) : (
             <></>
           )}
-      </Form.Group>
+
+          {loading ? (
+            <div className="spinner-border m-5 text-center" />
+          ) : foundUsers &&
+          foundUsers.length === 0 &&
+          all &&
+          all.length > 0 &&
+          !noRecordFound ? (
+              all.map((user) => (
+                <Link
+                  to={"/messages/" + user.uid}
+                  key={user.username}
+                  state={user}
+                  className="list-group-item list-group-item-action list-group-item-light m-1"
+                  id="user"
+                  href="http://localhost:3000/messages"
+                >
+                  <PersonCircle className="m-2" color="grey" size={40} />
+                  {user.username}
+                </Link>
+              ))
+            ) : (
+              <></>
+            )}
+        </Form.Group>
+      </div>
     </>
   );
 };

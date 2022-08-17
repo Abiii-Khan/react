@@ -2,8 +2,8 @@
 /* eslint-disable no-unused-vars */
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import { getAuth, signInWithEmailAndPassword} from "firebase/auth";
-import { Button, Form, Card } from "react-bootstrap";
+import { getAuth, signInWithEmailAndPassword, signOut} from "firebase/auth";
+import { Button, Form, Card, Navbar } from "react-bootstrap";
 import {db} from "../firebase.js"
 import { ref, onValue, push, update, remove } from "firebase/database";
 
@@ -58,6 +58,13 @@ const Login = (props) => {
 
   return (
     <>
+      <Navbar className="container-fluid" style={{backgroundColor: "#e3f2fd", fontFamily:"sans"}}>
+        <Link to="/Home" className=" text-black text-decoration-none" style={{margin:"10px"}}>Home  </Link>
+        <div className="nav-text">  
+          <Link to="/Login" className=" text-black text-decoration-none" style={{margin:"20px"}}>Login  </Link>
+          <Link to="/Register" className=" text-black text-decoration-none">Register</Link>
+        </div>
+      </Navbar>
       <div className="main-div">
         <Card className="container " style={{positon:"center", boxShadow:"2px 2px 15px"}}>
           <Card.Body>
