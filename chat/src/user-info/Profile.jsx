@@ -1,14 +1,20 @@
 /* eslint-disable no-unused-vars */
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { Form, Button, Modal } from "react-bootstrap";
-import { PersonCircle } from "react-bootstrap-icons";
+import { Form, Button, Modal, Dropdown } from "react-bootstrap";
+import {
+  PersonCircle,
+  ThreeDotsVertical,
+  BoxArrowInLeft,
+} from "react-bootstrap-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { db } from "../firebase.js";
 import { getAuth, signOut } from "firebase/auth";
 import { ref, onValue } from "firebase/database";
 import "../index.css";
-import { useLocation, useHref } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Profile = () => {
   const [user, setUser] = useState("");
@@ -21,28 +27,31 @@ const Profile = () => {
 
   useEffect(() => {
     const value = localStorage.getItem("Name");
-    const items = JSON.parse(value);
-    if (items) {
-      setUser(items);
+    const loggedInUser = JSON.parse(value);
+    if (loggedInUser) {
+      setUser(loggedInUser);
       Data();
     }
   }, []);
 
+  //  getting registered users from firebase 
+
   const Data = () => {
-    var item = [];
-    return onValue(ref(db, "/Users"), (querySnapShot) => {
+    var registeredUsers = [];
+    return onValue(ref(db, "/Users/Signup/"), (querySnapShot) => {
       querySnapShot.forEach((snap) => {
-        item.push(snap.val().Signup);
+        registeredUsers.push(snap.val());
       });
-      setAll(item);
+      setAll(registeredUsers);
       setLoading(false);
     });
   };
 
+  // setting filter for search
+
   const filter = (e) => {
     e.preventDefault();
     const keyword = e.target.value;
-
     if (keyword !== "") {
       const results = all.filter((user) => {
         return user.username.toLowerCase().startsWith(keyword.toLowerCase());
@@ -59,51 +68,86 @@ const Profile = () => {
     }
   };
 
-  const handleSubmit = () => {
+  //   signout and clear localstorage 
+
+  const logout = () => {
+    toast.warning("logging out");
     const auth = getAuth();
     signOut(auth)
       .then(() => {
-        window.location.href = "/login"
-      }).catch((error) => {
-        //
+        const valueClear = localStorage.getItem("Name");
+        localStorage.clear(valueClear);
+        window.location.href = "/login";
+      })
+      .catch((error) => {
+        alert(error);
       });
-  }
+  };
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   return (
     <>
+      {/*  Modal for logout  */}
+
       <Modal show={show} onHide={handleClose}>
-        <Modal.Body>
-          Are you sure you want to logout?
-        </Modal.Body>
+        <Modal.Body>Are you sure you want to logout?</Modal.Body>
         <Modal.Footer className="border-0">
           <Button variant="secondary" onClick={handleClose}>
             cancel
           </Button>
-          <Button variant="primary" onClick={handleSubmit}>
+          <Button variant="primary" onClick={logout}>
             logout
           </Button>
+          <ToastContainer
+            className="toast"
+            position="top-right"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
+          <ToastContainer />
         </Modal.Footer>
       </Modal>
+
+      {/*  Profile page header (dropdown, username, search-bar)  */}
+
       <div id="profile-header">
         <Form.Group className="container-fluid overflow-hidden bg-secondary">
           <div id="profile-head">
-            <h3 id="profile-name">
-              {user.username}
-            </h3>
-            <Form.Text type="submit" onClick={handleShow} className="logout">
-            Logout
-            </Form.Text>
+            <div>
+              <h3 id="profile-name">{user.username}</h3>
+            </div>
+            <div>
+              <Dropdown>
+                <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                  <ThreeDotsVertical id="dropdown-list" />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item type="submit" onClick={handleShow}>
+                    <BoxArrowInLeft /> Logout
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
           </div>
         </Form.Group>
+        
         <Form.Group className="container-fluid bg-secondary p-2">
-          <Form.Control id="profile-search"
+          <Form.Control
+            id="profile-search"
             className="container"
             type="search"
             placeholder="Search..."
             onChange={filter}
           ></Form.Control>
+
           <div className="user-list">
             {foundUsers && foundUsers !== "" ? (
               foundUsers.map((user) => (
@@ -119,8 +163,11 @@ const Profile = () => {
         </Form.Group>
         <br />
       </div>
-      <div id="profile-users">
-        <Form.Group className="container-fluid mt-10% list-group">
+
+      {/*  List of users found in search  */}
+
+      <div >
+        <Form.Group className="container-fluid mt-10 list-group">
           {foundUsers && foundUsers.length > 0 ? (
             foundUsers.map((user) => (
               <Link
@@ -139,26 +186,36 @@ const Profile = () => {
             <></>
           )}
 
+          {/*  All registered user's list   */}
+
           {loading ? (
-            <div className="spinner-border m-5 text-center" />
+            <>
+              <div className="d-flex justify-content-center ">
+                <div className="spinner-border"></div>
+              </div>
+            </>
           ) : foundUsers &&
-          foundUsers.length === 0 &&
-          all &&
-          all.length > 0 &&
-          !noRecordFound ? (
-              all.map((user) => (
-                <Link
-                  to={"/messages/" + user.uid}
-                  key={user.username}
-                  state={user}
-                  className="list-group-item list-group-item-action list-group-item-light m-1"
-                  id="user"
-                  href="http://localhost:3000/messages"
-                >
-                  <PersonCircle className="m-2" color="grey" size={40} />
-                  {user.username}
-                </Link>
-              ))
+            foundUsers.length === 0 &&
+            all &&
+            all.length > 0 &&
+            !noRecordFound ? (
+              <div id="profile-users" style={{zIndex:"0"}}>
+                {all
+                  .filter((a) => a.uid !== user.uid)
+                  .map((allUsers, key) => (
+                    <Link
+                      to={"/messages/" + allUsers.uid}
+                      key={allUsers.username}
+                      state={allUsers}
+                      className="list-group-item list-group-item-action list-group-item-light m-1"
+                      id="allUsers"
+                      href="http://localhost:3000/messages"
+                    >
+                      <PersonCircle className="m-2" color="grey" size={40} />
+                      {allUsers.username}
+                    </Link>
+                  ))}
+              </div>
             ) : (
               <></>
             )}

@@ -19,7 +19,7 @@ const Register = () => {
 
   const postUserData = async (user) => {
     const db = getDatabase();
-    set(ref(db, "Users/" + user + "/Signup"), {
+    set(ref(db, "Users/Signup/"+user), {
       username: formValues.username,
       email: formValues.email,
       password: formValues.password,
@@ -88,6 +88,7 @@ const Register = () => {
               <Form.Group className="m-1 p-1">
                 <Form.Label>username :</Form.Label>
                 <Form.Control
+                  className="input"
                   type="username"
                   name="username"
                   value={formValues.username}
@@ -101,6 +102,7 @@ const Register = () => {
                 <br />
                 <Form.Label>Email :</Form.Label>
                 <Form.Control
+                  className="input"
                   type="email"
                   name="email"
                   value={formValues.email}
@@ -114,6 +116,7 @@ const Register = () => {
                 <br />
                 <Form.Label>Password :</Form.Label>
                 <Form.Control
+                  className="input"
                   type="password"
                   name="password"
                   value={formValues.password}

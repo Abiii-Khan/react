@@ -15,6 +15,10 @@ body::-webkit-scrollbar {
   font-size: 20px;
   width: fit-content;
 }
+.input
+{
+  border-radius: 15px;
+}
 .logout
 {
   font-family: serif;
@@ -26,27 +30,50 @@ body::-webkit-scrollbar {
 {
   position: sticky;
   top: 0;
+  /* z-index: 9999; */
+}
+.spinner-border
+{
+  width: 5rem;
+  height: 5rem;
+  margin-top: 15rem;
+  color: grey;
+}
+.dropdown-toggle::after {
+  content: none;
+}
+#dropdown
+{
+  text-align: end;
+  margin: 50px;
+}
+#dropdown-list
+{
+  font-size: 20px;
 }
 #profile-head
 {
-  margin: "auto";
+  margin-top: 2%;
   position:"sticky"; 
-  top: 0;
-  text-align: end;
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between;
+  margin-bottom: 6%;
 }
 #profile-name
 {
   text-align: left;
-  font-family: fantasy;
+  font-family: monospace;
+  font-size: 35px;
   padding: 2%;
   color: white;
   text-transform: capitalize;
 }
-/* #profile-users
+#profile-users
 {
-  overflow: scroll;
-  background-color: red;
-} */
+  text-transform: capitalize;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
 #msg-form
 {
   display: flex;
@@ -56,8 +83,9 @@ body::-webkit-scrollbar {
 }
 #msg-head
 {
+  width: 100%;
   background-color: rgb(120, 125, 125);
-  height: 50px;
+  height: 100%;
   color: white;
   position: sticky;
   top: 0;
@@ -65,8 +93,30 @@ body::-webkit-scrollbar {
 #msg-h2
 {
   font-family: cursive;
-    margin-top: 3px;
+  /* font-weight: bold; */
+  padding: 3px;
     text-align: center;
     position: inherit;
     font-size: -webkit-xxx-large;
+}
+#textStyle
+{
+  color: white;
+  min-width: 100px;
+  max-width: 300px;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 15px;
+}
+.msg-footer
+{
+  border-top: "10px solid black";
+  margin-bottom: 70px;
+}
+.msg-space {
+  margin-bottom: 30%;
+}
+.modal 
+{
+margin-top: 250px;
 }
