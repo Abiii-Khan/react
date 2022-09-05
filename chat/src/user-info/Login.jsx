@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { Button, Form, Card, Navbar } from "react-bootstrap";
@@ -17,12 +17,18 @@ const Login = (props) => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const history = useNavigate();
+  // const navigate = useNavigate();
+
+  // const location = useLocation();
+
+  // set user details in formValues
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
+
+  // get the user authorization from backend
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,16 +42,17 @@ const Login = (props) => {
     )
       .then((userCredential) => {
         const user = userCredential.user.email;
-        // setUser(user);
-        console.log(user, "user");
-        setLoading(true);
         setFormErrors({ registered: "Login successful!" });
         toast.success("logging in");
         onValue(ref(db, "/Users/Signup/"), (querySnapShot) => {
           querySnapShot.forEach((snap) => {
             if (snap.val().email === user) {
               localStorage.setItem("Name", JSON.stringify(snap.val()));
-              history("/profile");
+              // navigate("/profile" )
+              // navigate("/profile", { replace: true })
+              // navigate("/profile", { state: {}, replac:true })
+              // history("/profile");
+              window.location.href = "/profile";
             }
           });
         });
@@ -62,6 +69,7 @@ const Login = (props) => {
         }
       });
   };
+  
   useEffect(() => {
     if (formErrors.length === 0 && isSubmit) {
       //
@@ -71,32 +79,31 @@ const Login = (props) => {
   return (
     <>
       <Navbar
-        className="container-fluid"
-        style={{ backgroundColor: "#e3f2fd", fontFamily: "sans" }}
+        className="container-fluid nav-bar"
       >
         <Link
-          to="/Home"
+          to="/"
           className=" text-black text-decoration-none"
           style={{ margin: "10px" }}
         >
-          Home
+          <img src="logo192.png" alt="logo" className="nav-logo"/>
         </Link>
         <div className="nav-text">
           <Link
             to="/Login"
-            className=" text-black text-decoration-none"
+            className="nav-login"
             style={{ margin: "20px" }}
           >
             Login
           </Link>
-          <Link to="/Register" className=" text-black text-decoration-none">
+          <Link to="/Register" className="nav-register">
             Register
           </Link>
         </div>
       </Navbar>
-      <div className="main-div">
+      <div className="login-card">
         <Card
-          className="container "
+          className="container"
           style={{ positon: "center", boxShadow: "2px 2px 15px" }}
         >
           <Card.Body>
@@ -137,7 +144,6 @@ const Login = (props) => {
                 <br />
                 <ToastContainer
                   className="toast"
-                  position="top-right"
                   autoClose={3000}
                   hideProgressBar={false}
                   newestOnTop={false}

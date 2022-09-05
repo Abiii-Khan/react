@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { Form, Button, Modal, Dropdown } from "react-bootstrap";
 import {
@@ -24,6 +24,8 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   let location = useLocation();
   const [show, setShow] = useState(false);
+
+  // const history = useNavigate();
 
   useEffect(() => {
     const value = localStorage.getItem("Name");
@@ -77,7 +79,8 @@ const Profile = () => {
       .then(() => {
         const valueClear = localStorage.getItem("Name");
         localStorage.clear(valueClear);
-        window.location.href = "/login";
+        // history("/login");
+        window.location.href = "/login"; 
       })
       .catch((error) => {
         alert(error);
@@ -102,7 +105,6 @@ const Profile = () => {
           </Button>
           <ToastContainer
             className="toast"
-            position="top-right"
             autoClose={2000}
             hideProgressBar={false}
             newestOnTop={false}
@@ -127,10 +129,10 @@ const Profile = () => {
             <div>
               <Dropdown>
                 <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                  <ThreeDotsVertical id="dropdown-list" />
+                  <ThreeDotsVertical id="dropdown-icon" />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item type="submit" onClick={handleShow}>
+                  <Dropdown.Item type="submit" className="dropdown-items" onClick={handleShow}>
                     <BoxArrowInLeft /> Logout
                   </Dropdown.Item>
                 </Dropdown.Menu>
@@ -176,7 +178,9 @@ const Profile = () => {
                 key={user.username}
                 state={user}
               >
-                <PersonCircle className="m-2" color="grey" size={40} />
+                <PersonCircle 
+                  className="m-2" color="grey" size={40} 
+                />
                 {user.username}
               </Link>
             ))
@@ -211,7 +215,9 @@ const Profile = () => {
                       id="allUsers"
                       href="http://localhost:3000/messages"
                     >
-                      <PersonCircle className="m-2" color="grey" size={40} />
+                      <PersonCircle 
+                        className="m-2" color="grey" size={40} 
+                      />
                       {allUsers.username}
                     </Link>
                   ))}

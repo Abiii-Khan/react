@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import {React, useState, useEffect} from "react";
+import { React, useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./user-info/Login.jsx";
 import Register from "./user-info/Registration.jsx";
@@ -10,8 +10,7 @@ import Home from "./Home.js";
 import "./index.css";
 
 const App = () => {
-
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState();
 
   useEffect(() => {
     const value = localStorage.getItem("Name");
@@ -21,14 +20,14 @@ const App = () => {
     }
   }, []);
 
-  const ProtectedRoute = ({ user, redirectPath = "/Login", children }) => {
-    console.log(user)
-    if (!user) {
-      return <Navigate to={redirectPath} replace />;
-    }
-  
-    return children;
-  };
+  console.log(user)
+  // const ProtectedRoute = ({ user, redirectPath = "/Login", children }) => {
+  //   if (!user) {
+  //     <Navigate to={redirectPath} replace />;
+  //   }
+
+  //   return children;
+  // };
 
   return (
     <>
@@ -37,16 +36,30 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="Login" element={<Login />} />
           <Route path="Register" element={<Register />} />
-          <Route path="Profile" element={
-            <ProtectedRoute user={user}>
-              <Profile />
-            </ProtectedRoute>
-          } />
-          <Route path="messages/:id" element={
-            <ProtectedRoute user={user}>
-              <Messages />
-            </ProtectedRoute>
-          } />
+          <Route
+            path="Profile"
+            element={
+              user ? (
+                // <ProtectedRoute user={user}>
+                <Profile />
+              ) : (
+                <Login />
+              )
+              // </ProtectedRoute>
+            }
+          />
+          <Route
+            path="messages/:id"
+            element={
+              user ? (
+                // <ProtectedRoute user={user}>
+                <Messages />
+              ) : (
+                <Login />
+              )
+              // </ProtectedRoute>
+            }
+          />
           <Route
             path="*"
             element={

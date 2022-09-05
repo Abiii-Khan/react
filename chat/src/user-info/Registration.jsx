@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { Button, Form, Card, Navbar } from "react-bootstrap";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { getDatabase, ref, set } from "firebase/database";
 
 const Register = () => {
@@ -12,14 +14,18 @@ const Register = () => {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
 
+  // set the user values in formValues
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
 
+  // set user data in backend
+
   const postUserData = async (user) => {
     const db = getDatabase();
-    set(ref(db, "Users/Signup/"+user), {
+    set(ref(db, "Users/Signup/" + user), {
       username: formValues.username,
       email: formValues.email,
       password: formValues.password,
@@ -27,24 +33,28 @@ const Register = () => {
     });
   };
 
+  //
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmit(true);
-
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, formValues.email, formValues.password)
       .then((userCredential) => {
         setFormErrors({ registered: "Account created successfully!" });
+        toast.success("Account created successfully!");
+
         if (userCredential?.user?.uid) {
           postUserData(userCredential.user.uid);
         }
+        console.log(formValues);
       })
       .catch((error) => {
         if (error.code === "auth/internal-error") {
           alert("Please fill all the fields");
         } else if (error.code === "auth/email-already-in-use") {
           setFormErrors({
-            email: "email already in use, use a different email.",
+            email: "email already in use",
           });
         } else if (error.code === "auth/invalid-email") {
           setFormErrors({ email: "invalid email!" });
@@ -70,16 +80,30 @@ const Register = () => {
 
   return (
     <>
-      <Navbar className="container-fluid" style={{backgroundColor: "#e3f2fd", fontFamily:"sans"}}>
-        <Link to="/Home" className=" text-black text-decoration-none" style={{margin:"10px"}}>Home  </Link>
-        <div className="nav-text">  
-          <Link to="/Login" className=" text-black text-decoration-none" style={{margin:"20px"}}>Login  </Link>
-          <Link to="/Register" className=" text-black text-decoration-none">Register</Link>
+      <Navbar className="container-fluid nav-bar">
+        <Link
+          to="/"
+          className=" text-black text-decoration-none"
+          style={{ margin: "10px" }}
+        >
+          <img src="logo192.png" alt="logo" className="nav-logo" />
+        </Link>
+        <div className="nav-text">
+          <Link
+            to="/Login"
+            className="nav-login"
+            style={{ margin: "20px" }}
+          >
+            Login
+          </Link>
+          <Link to="/Register" className="nav-register">
+            Register
+          </Link>
         </div>
       </Navbar>
-      <div className="main-div mt-5">
+      <div className="register-card">
         <Card
-          className="container "
+          className="container"
           style={{ positon: "center", boxShadow: "2px 2px 15px" }}
         >
           <Card.Body>
@@ -107,7 +131,7 @@ const Register = () => {
                   name="email"
                   value={formValues.email}
                   onChange={handleChange}
-                  placeholder="example@email.com"
+                  placeholder="example@chat.com"
                   required
                 ></Form.Control>
                 <Form.Text style={{ color: "red" }}>
@@ -131,11 +155,18 @@ const Register = () => {
                 <Button type="submit" variant="primary">
                   Register
                 </Button>
-                <br />
-                <Form.Text style={{ color: "green" }}>
-                  {formErrors.registered}
-                </Form.Text>
-                <br />
+                <ToastContainer
+                  className="toast"
+                  autoClose={3000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                />
+                <ToastContainer />
               </Form.Group>
               <Form.Text>
                 Already have an account? <Link to="/Login">Login</Link>
