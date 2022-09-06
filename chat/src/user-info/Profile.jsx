@@ -25,8 +25,6 @@ const Profile = () => {
   let location = useLocation();
   const [show, setShow] = useState(false);
 
-  // const history = useNavigate();
-
   useEffect(() => {
     const value = localStorage.getItem("Name");
     const loggedInUser = JSON.parse(value);
@@ -79,7 +77,6 @@ const Profile = () => {
       .then(() => {
         const valueClear = localStorage.getItem("Name");
         localStorage.clear(valueClear);
-        // history("/login");
         window.location.href = "/login"; 
       })
       .catch((error) => {

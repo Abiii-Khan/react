@@ -17,12 +17,6 @@ const Login = (props) => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // const navigate = useNavigate();
-
-  // const location = useLocation();
-
-  // set user details in formValues
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
@@ -48,10 +42,6 @@ const Login = (props) => {
           querySnapShot.forEach((snap) => {
             if (snap.val().email === user) {
               localStorage.setItem("Name", JSON.stringify(snap.val()));
-              // navigate("/profile" )
-              // navigate("/profile", { replace: true })
-              // navigate("/profile", { state: {}, replac:true })
-              // history("/profile");
               window.location.href = "/profile";
             }
           });
@@ -119,6 +109,7 @@ const Login = (props) => {
                   onChange={handleChange}
                   placeholder="example@email.com"
                   required
+                  autoComplete="off"
                 ></Form.Control>
                 <Form.Text style={{ color: "red" }}>
                   {formErrors.email}
@@ -133,6 +124,7 @@ const Login = (props) => {
                   onChange={handleChange}
                   placeholder="******"
                   required
+                  autoComplete="off"
                 ></Form.Control>
                 <Form.Text style={{ color: "red" }}>
                   {formErrors.password}

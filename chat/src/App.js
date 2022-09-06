@@ -20,15 +20,6 @@ const App = () => {
     }
   }, []);
 
-  console.log(user)
-  // const ProtectedRoute = ({ user, redirectPath = "/Login", children }) => {
-  //   if (!user) {
-  //     <Navigate to={redirectPath} replace />;
-  //   }
-
-  //   return children;
-  // };
-
   return (
     <>
       <BrowserRouter>
@@ -40,24 +31,20 @@ const App = () => {
             path="Profile"
             element={
               user ? (
-                // <ProtectedRoute user={user}>
                 <Profile />
               ) : (
                 <Login />
               )
-              // </ProtectedRoute>
             }
           />
           <Route
             path="messages/:id"
             element={
               user ? (
-                // <ProtectedRoute user={user}>
                 <Messages />
               ) : (
                 <Login />
               )
-              // </ProtectedRoute>
             }
           />
           <Route

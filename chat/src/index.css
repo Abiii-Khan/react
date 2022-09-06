@@ -59,14 +59,13 @@ body::-webkit-scrollbar {
 .home-h1
 {
   text-align: center;
-
-
   padding: 25px;
-    margin: 40px;
-    box-shadow: 2 2 black;
-    box-shadow: 0px -10px 10px grey;
-    background-color: white;
-    color: black;
+  margin: 40px;
+  margin-top: 12px;
+  box-shadow: 2 2 black;
+  box-shadow: 0px -10px 10px grey;
+  background-color: white;
+  color: black;
 }
 .login-card
 {
@@ -176,7 +175,7 @@ body::-webkit-scrollbar {
 #textStyle
 {
   color: white;
-  min-width: 100px;
+  min-width: 60px;
   max-width: 300px;
   margin: 5px;
   padding: 5px;
@@ -185,6 +184,7 @@ body::-webkit-scrollbar {
 .msg-time
 {
   font-size: x-small;
+  margin-left: 10px;
 }
 .msg-footer
 {

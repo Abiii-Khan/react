@@ -43,11 +43,12 @@ const Register = () => {
       .then((userCredential) => {
         setFormErrors({ registered: "Account created successfully!" });
         toast.success("Account created successfully!");
-
         if (userCredential?.user?.uid) {
           postUserData(userCredential.user.uid);
+          window.location.href = "/login";
         }
         console.log(formValues);
+        setFormValues(initialValues);
       })
       .catch((error) => {
         if (error.code === "auth/internal-error") {
@@ -66,7 +67,7 @@ const Register = () => {
           setFormErrors({ password: "invalid password!" });
         } else if (error.code === "auth/weak-password") {
           setFormErrors({
-            password: "weak password! Password should be at least 6 characters",
+            password: "Password should be at least 6 characters",
           });
         }
       });
@@ -119,6 +120,7 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="username"
                   required
+                  autoComplete="off"
                 ></Form.Control>
                 <Form.Text style={{ color: "red" }}>
                   {formErrors.username}
@@ -133,6 +135,7 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="example@chat.com"
                   required
+                  autoComplete="off"
                 ></Form.Control>
                 <Form.Text style={{ color: "red" }}>
                   {formErrors.email}
@@ -147,6 +150,7 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="******"
                   required
+                  autoComplete="off"
                 ></Form.Control>
                 <Form.Text style={{ color: "red" }}>
                   {formErrors.password}
