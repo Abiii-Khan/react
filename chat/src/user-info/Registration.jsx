@@ -90,11 +90,7 @@ const Register = () => {
           <img src="logo192.png" alt="logo" className="nav-logo" />
         </Link>
         <div className="nav-text">
-          <Link
-            to="/Login"
-            className="nav-login"
-            style={{ margin: "20px" }}
-          >
+          <Link to="/Login" className="nav-login" style={{ margin: "20px" }}>
             Login
           </Link>
           <Link to="/Register" className="nav-register">
